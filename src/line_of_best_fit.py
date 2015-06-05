@@ -1,6 +1,8 @@
 import csv
-import numpy as np
+import numpy
+from numpy import array
 import sys
+import warnings
 import textwrap
 
 def readFile(fileName):
@@ -20,7 +22,7 @@ def readFile(fileName):
 	f.close
 	return (numpy.array(times), numpy.array(thrust))
 
-	
+warnings.simplefilter('ignore', numpy.RankWarning)
 
 if len(sys.argv) < 3:
 	print ''
@@ -36,4 +38,5 @@ else:
 
 
 	for degree in range(3, 19):
-		leastSquareFit(degree, times, thrust)
+		lsf = numpy.polyfit(times, thrust, degree)
+		
