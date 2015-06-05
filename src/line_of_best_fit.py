@@ -1,4 +1,5 @@
 import csv
+import numpy as np
 import sys
 import textwrap
 
@@ -17,7 +18,9 @@ def readFile(fileName):
 			r = r + 1
 
 	f.close
-	return (times, thrust)
+	return (numpy.array(times), numpy.array(thrust))
+
+	
 
 if len(sys.argv) < 3:
 	print ''
@@ -27,4 +30,10 @@ if len(sys.argv) < 3:
 	print ''
 	print 'Try again...'
 else:
-	print readFile(sys.argv[1])
+	inputFileName = sys.argv[1]
+	outputFileName = sys.argv[2]
+	times, thrust = readFile(inputFileName)
+
+
+	for degree in range(3, 19):
+		leastSquareFit(degree, times, thrust)
