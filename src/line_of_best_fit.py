@@ -1,12 +1,22 @@
+pylabExists = True
+
 import csv
 import numpy
 import os
-import pylab
+
+try:
+	import pylab
+except ImportError:
+	pylabExists = False
+	print 'pylab is not installed; images of graphs will not be produced'
+
 import sys
 import warnings
 import textwrap
 from numpy import array
-from pylab import *
+
+if pylabExists:
+	from pylab import *
 
 # Reads the text file at a certain path (fileName)
 def readFile(fileName):
@@ -19,7 +29,7 @@ def readFile(fileName):
 	for row in csv_f:
 		if len(row) >= 2: # if there are at least two values (time and thrust)
 			times.append(float(row[0])) # append the time value in the times list
-			thrust.apppend(float(row[1])) # append the thrust value in the thrust list
+			thrust.append(float(row[1])) # append the thrust value in the thrust list
 
 	f.close
 	return (numpy.array(times), numpy.array(thrust))
@@ -82,30 +92,40 @@ def calculateError(times, thrusts, coefficients):
 # ======================================================================================================
 warnings.simplefilter('ignore', numpy.RankWarning) # numpy raises a warning; we will ignore it
 
+lengthOfParam = 0
+
+if pylabExists:
+	lengthOfParam = 4
+else:
+	lengthOfParam = 3
+
 # print an error message if not enough command line arguments were provided
-if len(sys.argv) < 4:
+if len(sys.argv) < lengthOfParam:
 	print ''
-	print 'The following three command line arguments must be provided:'
+	print 'The following command line arguments must be provided:'
 	print ''
 	print '1. The file path of the csv file containing the digitized thrust curve'
 	print '2. The file path of the output file'
 	print '3. The path to a directory where the images of the ploys will be'
-	print '   created and stored'
+	print '   created and stored (IF pylab IS INSTALLED)'
 	print ''
 	print 'Try again...'
 else:
 	# get the command line arguments
 	inputFileName = os.path.abspath(sys.argv[1])
 	outputFileName = os.path.abspath(sys.argv[2])
-	outputDir = os.path.abspath(sys.argv[3])
+	outputDir = ''
 
-	# make the output directory (the one that will contain the images of graphs) if it does not exist
-	if not os.path.exists(outputDir):
-		os.makedirs(outputDir)
+	if pylabExists:
+		outputDir = os.path.abspath(sys.argv[3])
 
-	# complete the file path of the output directory by appending a forward slash if already not completed
-	if not outputDir.endswith('/'):
-		outputDir = outputDir + '/'
+		# make the output directory (the one that will contain the images of graphs) if it does not exist
+		if not os.path.exists(outputDir):
+			os.makedirs(outputDir)
+
+		# complete the file path of the output directory by appending a forward slash if already not completed
+		if not outputDir.endswith('/'):
+			outputDir = outputDir + '/'
 
 	times, thrust = readFile(inputFileName) # read the csv file
 	startDegree = 3 # the lowest degree that we will use
@@ -115,19 +135,20 @@ else:
 										   # overwrite if necessary
 
 	for degree in range(startDegree, endDegree + 1):
-		p = np.array(numpy.polyfit(times, thrust, degree)) # calculate line of best fit
+		p = numpy.array(numpy.polyfit(times, thrust, degree)) # calculate line of best fit
 
-		# make plot
-		pylab.plot(times, thrust, 'bo')
-		pylab.xlabel('Times (in seconds)')
-		pylab.ylabel('Thrust (in newtons)')
-		pylab.grid(True)
-		pylab.title('Thrust Data: Degree = {0:2d}'.format(degree))
-		pylab.plot(times, polyval(p, times), 'g')
+		if pylabExists:
+			# make plot
+			pylab.plot(times, thrust, 'bo')
+			pylab.xlabel('Times (in seconds)')
+			pylab.ylabel('Thrust (in newtons)')
+			pylab.grid(True)
+			pylab.title('Thrust Data: Degree = {0:2d}'.format(degree))
+			pylab.plot(times, polyval(p, times), 'g')
 
-		filePath = outputDir + 'polyfit_degree_' + str(degree); # make file path of image
-		pylab.savefig(filePath) # save image
-		pylab.close() # close current figure so a new one can be made
+			filePath = outputDir + 'polyfit_degree_' + str(degree); # make file path of image
+			pylab.savefig(filePath) # save image
+			pylab.close() # close current figure so a new one can be made
 
 		maxErr, avgErr, rmsErr = calculateError(times, thrust, p) # calculate the errors
 
