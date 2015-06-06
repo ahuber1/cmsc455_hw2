@@ -1,0 +1,60 @@
+degree =  3: maxError = 8.32
+degree =  3: avgError = 0.00
+degree =  3: rmsError = 2.10
+
+degree =  4: maxError = 5.18
+degree =  4: avgError = 0.00
+degree =  4: rmsError = 1.79
+
+degree =  5: maxError = 3.27
+degree =  5: avgError = 0.00
+degree =  5: rmsError = 1.66
+
+degree =  6: maxError = 3.54
+degree =  6: avgError = 0.00
+degree =  6: rmsError = 1.15
+
+degree =  7: maxError = 3.11
+degree =  7: avgError = 0.00
+degree =  7: rmsError = 1.02
+
+degree =  8: maxError = 2.83
+degree =  8: avgError = 0.00
+degree =  8: rmsError = 0.99
+
+degree =  9: maxError = 3.04
+degree =  9: avgError = 0.00
+degree =  9: rmsError = 0.97
+
+degree = 10: maxError = 3.06
+degree = 10: avgError = 0.00
+degree = 10: rmsError = 0.80
+
+degree = 11: maxError = 2.68
+degree = 11: avgError = 0.00
+degree = 11: rmsError = 0.69
+
+degree = 12: maxError = 2.28
+degree = 12: avgError = 0.00
+degree = 12: rmsError = 0.62
+
+degree = 13: maxError = 2.33
+degree = 13: avgError = 0.00
+degree = 13: rmsError = 0.62
+
+degree = 14: maxError = 2.29
+degree = 14: avgError = 0.00
+degree = 14: rmsError = 0.56
+
+degree = 15: maxError = 1.97
+degree = 15: avgError = 0.00
+degree = 15: rmsError = 0.48
+
+degree = 16: maxError = 1.64
+degree = 16: avgError = 0.00
+degree = 16: rmsError = 0.40
+
+degree = 17: maxError = 1.62
+degree = 17: avgError = 0.00
+degree = 17: rmsError = 0.40
+
